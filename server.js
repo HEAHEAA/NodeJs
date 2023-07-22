@@ -15,7 +15,7 @@ const MongoClient = require('mongodb').MongoClient;
 app.set('view engine', 'ejs');
 
 
-MongoClient.connect("mongodb+srv://kimjihee1113:4IEHuLQav3FsGAch@kimjihee.s5gra3y.mongodb.net/?retryWrites=true&w=majority", function(에러,client){
+MongoClient.connect(process.env.MongoURL, function(에러,client){
     //연결되면 할일
     if(에러) return console.log(에러)
 
