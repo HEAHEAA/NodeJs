@@ -10,6 +10,11 @@ app.use(express.urlencoded({extended: true}))
 //mongodb연결
 var db;
 const MongoClient = require('mongodb').MongoClient;
+
+//ejs 라이브러리 사용하기
+app.set('view engine', 'ejs');
+
+
 MongoClient.connect("mongodb+srv://kimjihee1113:4IEHuLQav3FsGAch@kimjihee.s5gra3y.mongodb.net/?retryWrites=true&w=majority", function(에러,client){
     //연결되면 할일
     if(에러) return console.log(에러)
@@ -61,6 +66,25 @@ app.post('/add', (req,res) => {
         console.log('데이터 저장완료!!!');
     });    
 });
+
+
+// ??가 get으로 접속하면 html을 보여줌 실제 db에 저장된 데이터를 !
+app.get('/list', function(req,res){
+    
+    // post에 저장된 모든 데이터가 가져와짐.
+    db.collection('post').find().toArray(function(에러,결과){
+        console.log(결과);
+        res.render('list.ejs', {posts : 결과});
+    });
+    //디비에 저장된 post라는 collection안에 제목이 ??인 데이터를 꺼내주세요.
+
+
+});
+
+
+
+
+
 
 
 
