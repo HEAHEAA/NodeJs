@@ -7,10 +7,16 @@ app.use(express.urlencoded({extended: true}))
 // const bodyParser = require('body-parser');
 // app.use(bodyParser.urlencoded({extended : true}));
 
+//mongodb연결
+const MongoClient = require('mongodb').MongoClient;
+MongoClient.connect('mongodb+srv://kimjihee1113:Fg5EMtDa2FQWFFd4@kimjihee.s5gra3y.mongodb.net/?retryWrites=true&w=majority', function(에러,client){
+    //연결되면 할일
+    app.listen(8080, function(){
+        console.log('listening on 8080')
+    });
 
-app.listen(8080, function(){
-    console.log('listening on 8080')
-});
+})
+
 
 
 //1. 누군가가 /pet 으로 방문하면 pet 관련된 안내문을 띄우기 (GET)
@@ -40,7 +46,6 @@ app.post('/add', (req,res) => {
     res.send('전송완료')
     console.log(req.body);
     //db에 저장해주세용
-    
 });
 
 
