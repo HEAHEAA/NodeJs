@@ -2,6 +2,9 @@ const express = require('express')
 const app = express()
 app.use(express.urlencoded({extended: true})) 
 
+//미들웨어 설정
+app.set('/Result/public', express.static('public'));
+
 
 
 //mongodb연결
@@ -21,11 +24,13 @@ MongoClient.connect('mongodb+srv://kimjihee:qwer1234@kimjihee.s5gra3y.mongodb.ne
 
 
 app.get('/', (req,res) => {
-    res.sendFile(__dirname + '/Page/index.html');
+    db.collection('post').find().toArray(function(err,result){
+        res.render('list.ejs', {posts : result});
+    });
 });
 
 app.get('/write',(req,res) => {
-    res.sendFile(__dirname + '/Page/write.html');
+    res.render('write.ejs');
 });
 
 app.post('/read', (req,res) => {
@@ -44,11 +49,8 @@ app.post('/read', (req,res) => {
     });
 });
 
-app.get('/read', (req,res) => {
-    db.collection('post').find().toArray(function(err,result){
-        res.render('list.ejs', {posts : result});
-    });
-});
+
+
 
 app.delete('/delete', function(req,res){
     console.log(req.body);
@@ -68,3 +70,19 @@ app.delete('/delete', function(req,res){
         
     })
 })
+
+
+//get요청 url에 파라미터 넣어주기 ( :id )
+app.get('/detail/:id', function(req,res){
+
+    //db에서 사용자가 요청한 id를 가져온다.
+    db.collection('post').findOne({_id: parseInt(req.params.id)},function(err,result){
+        console.log(result);
+
+        //결과는 result기 때문에 하나씩 출력이 가능하다.
+        res.render('detail.ejs', { data : result})
+    });
+
+})
+
+
