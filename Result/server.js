@@ -29,6 +29,8 @@ app.get('/write',(req,res) => {
 });
 
 app.post('/read', (req,res) => {
+    res.send('전송완료');
+
     db.collection('counter').findOne({name: "게시물갯수"}, function(error,dbres){
         var 총게시물갯수 = dbres.totalPost;
 
@@ -46,4 +48,23 @@ app.get('/read', (req,res) => {
     db.collection('post').find().toArray(function(err,result){
         res.render('list.ejs', {posts : result});
     });
+});
+
+app.delete('/delete', function(req,res){
+    console.log(req.body);
+    req.body._id = parseInt(req.body._id);
+
+
+    //게시물id 값을 찾아서 삭제할거임
+    db.collection('post').deleteOne(req.body, function(error,result){
+        console.log("삭제완료");
+
+        if(res.status(200)){
+            res.status(200).send({ message: '성공' });
+        }
+        if(res.status(500)){
+            res.status(500).send({ message: '서버문제' });
+        }
+        
+    })
 })
