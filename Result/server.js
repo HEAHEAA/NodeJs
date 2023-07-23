@@ -5,6 +5,11 @@ app.use(express.urlencoded({extended: true}))
 //미들웨어 설정
 app.set('/Result/public', express.static('public'));
 
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'))
+app.set('view engine', 'ejs');
+
+
 
 
 //mongodb연결
@@ -84,5 +89,30 @@ app.get('/detail/:id', function(req,res){
     });
 
 })
+
+
+
+//수정서버 만들기
+//1.파라미터 넣기
+app.get('/edit/:id', function(req,res){
+    
+    db.collection('post').findOne({_id: parseInt(req.params.id)}, function(err,result){
+        res.render('edit.ejs', {editData : result})
+    });
+
+});
+
+
+//코드짤때 미리 글로 정리를 해놓고 짜보자.
+//1. 폼에 답긴 제목 날짜 데이터를 가지고 db collection에다가 업데이트를 함.
+app.put('/edit', function(req,res){
+
+    db.collection('post').updateOne({_id: parseInt(req.body.id)},{ $set: {title: req.body.title,date: req.body.date}},function(error,result){
+        console.log('수정완료');
+        
+        res.redirect('/');
+    });
+
+});
 
 

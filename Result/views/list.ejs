@@ -27,6 +27,14 @@
           </h4>
             <p>할일 마감 :   <%= posts[i].date %></p>
             <button class="delete btn btn-danger" data-id="<%= posts[i]._id %>">삭제</button>
+          
+              <a href="/edit/<%= posts[i]._id %>">
+                <button class="btn btn-warning">
+                  수정하기
+                </button>
+              </a>
+            
+        
           </li>
           <% } %>
         </ul>
